@@ -4,12 +4,14 @@ bash "Install rbenv and ruby" do
   mkdir -p /home/deploy/enterd
   echo 'hellooooooo'
   mkdir -p /home/deploy/echo
-  su deploy
+  #su deploy
   mkdir -p /home/deploy/su
 
   curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+  wget https://deb.nodesource.com/setup_8.x
   mkdir -p /home/deploy/curl1
   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+  wget https://dl.yarnpkg.com/debian/pubkey.gpg
   mkdir -p /home/deploy/curl2
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   mkdir -p /home/deploy/echo2
@@ -37,7 +39,7 @@ bash "Install rbenv and ruby" do
 
 
   EOF
-  user "root"
+  user "deploy"
 
 end
 
