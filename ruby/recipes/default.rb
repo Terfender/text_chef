@@ -1,15 +1,23 @@
 # Install rbenv and ruby
 bash "Install rbenv and ruby" do
   code <<-EOF
+  mkdir -p /home/deploy/enterd
   echo 'hellooooooo'
+  mkdir -p /home/deploy/echo
   su deploy
+  mkdir -p /home/deploy/su
 
   curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+  mkdir -p /home/deploy/curl1
   curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+  mkdir -p /home/deploy/curl2
   echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+  mkdir -p /home/deploy/echo2
 
   sudo apt-get update
+  mkdir -p /home/deploy/update
   sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs yarn
+  mkdir -p /home/deploy/apt_get
 
   cd
   git clone https://github.com/rbenv/rbenv.git ~/.rbenv
