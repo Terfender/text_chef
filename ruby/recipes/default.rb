@@ -32,7 +32,7 @@ end
 
 
 cookbook_file "install my lib" do
-  source "/var/chef/cookbooks/ruby/files/default/shell.sh"
+  source "shell.sh"
   mode 0755
 end
 
