@@ -40,3 +40,15 @@ execute "Install rbenv and ruby -- debug" do
   command "echo 'hellooooooo2'"
   user "root"
 end
+
+bash "create test folder 1" do
+  code "mkdir -p /home/deploy/folder1"
+  user "deploy"
+end
+
+bash "create test folder 2" do
+  code <<-EOF
+    mkdir -p /home/deploy/folder2
+  EOF
+  user "deploy"
+end
