@@ -21,5 +21,5 @@ bash "Create deploy user" do
   EOF
   user "root"
 
-  not_if { `bash -c "id -u name"`.lines[0].to_i > 0 }
+  not_if { `bash -c "id -u deploy"`.lines[0].to_i > 0 }
 end
