@@ -29,7 +29,6 @@ bash "Installing rbenv" do
 
 
   EOF
-  user "root"
+  user "deploy"
 
-  not_if { `bash -c "id -u name"`.lines[0].to_i > 0 }
 end

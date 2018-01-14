@@ -19,5 +19,4 @@ bash "Installing nginx" do
   EOF
   user "root"
 
-  not_if { `bash -c "id -u name"`.lines[0].to_i > 0 }
 end
