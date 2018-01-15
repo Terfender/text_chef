@@ -1,7 +1,7 @@
 # Install rbenv and ruby
 bash "Install rbenv and ruby" do
   code <<-EOF
-    su deploy
+    # su deploy
 
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -10,7 +10,7 @@ bash "Install rbenv and ruby" do
     sudo apt-get update
     sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs yarn
 
-    cd
+    cd ~/home/deploy
     git clone https://github.com/rbenv/rbenv.git ~/.rbenv
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
     echo 'eval "$(rbenv init -)"' >> ~/.bashrc
@@ -26,19 +26,19 @@ bash "Install rbenv and ruby" do
 
     gem install bundler
   EOF
-  user "deploy"
+  user "root"
 
 end
 
 
-cookbook_file "install my lib" do
-  source "shell.sh"
-  mode 0755
-end
+# cookbook_file "install my lib" do
+#   source "shell.sh"
+#   mode 0755
+# end
 
-execute "install my lib" do
-  command "sh /var/chef/cookbooks/ruby/files/default/shell.sh"
-end
+# execute "install my lib" do
+#   command "sh /var/chef/cookbooks/ruby/files/default/shell.sh"
+# end
 
 # # Install RVM
 # execute "Installing pubkey.gpg" do
