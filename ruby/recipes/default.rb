@@ -1,8 +1,7 @@
 # Install rbenv and ruby
 bash "Install rbenv and ruby" do
   code <<-EOF
-    su deploy
-    echo 12121212 | sudo -S mkdir /home/temp
+    su ubuntu
 
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
