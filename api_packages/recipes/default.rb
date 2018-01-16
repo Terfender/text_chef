@@ -14,7 +14,7 @@ bash "Install rbenv and ruby" do
     ./configure
     make clean
     make
-    checkunstall
+    checkinstall
     ldconfig /usr/local/lib
     magick -version
 
