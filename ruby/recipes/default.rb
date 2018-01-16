@@ -52,33 +52,31 @@ bash 'sourcing' do
   environment ({'HOME' => '/home/ubuntu'})
 end
 
-execute 'Install ruby' do
-  command 'rbenv install 2.5.0'
-  user "ubuntu"
-  environment ({'HOME' => '/home/ubuntu'})
-end
-
-execute 'global ruby' do
-  command 'rbenv global 2.5.0'
-  user "ubuntu"
-  environment ({'HOME' => '/home/ubuntu'})
-end
-
-# # Install ruby
-# bash "Install ruby" do
-#   code <<-EOF
-#     sudo -s
-#     source /home/ubuntu/.bashrc
-#     rbenv install 2.5.0
-#     rbenv global 2.5.0
-#     ruby -v
-
-#     echo 'installing bundler'
-#     gem install bundler
-#     echo 'bundler done'
-
-#   EOF
+# execute 'Install ruby' do
+#   command 'rbenv install 2.5.0'
 #   user "ubuntu"
 #   environment ({'HOME' => '/home/ubuntu'})
-
 # end
+
+# execute 'global ruby' do
+#   command 'rbenv global 2.5.0'
+#   user "ubuntu"
+#   environment ({'HOME' => '/home/ubuntu'})
+# end
+
+# Install ruby
+bash "Install ruby" do
+  code <<-EOF
+    source /home/ubuntu/.bashrc
+    rbenv install 2.5.0
+    rbenv global 2.5.0
+    ruby -v
+
+    echo 'installing bundler'
+    gem install bundler
+    echo 'bundler done'
+
+  EOF
+  user "ubuntu"
+  # environment ({'HOME' => '/home/ubuntu'})
+end
