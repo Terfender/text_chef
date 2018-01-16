@@ -29,7 +29,9 @@ bash "Install rbenv and ruby" do
       git clone https://github.com/rbenv/rbenv.git /home/ubuntu/.rbenv
       echo 'export PATH="/home/ubuntu/.rbenv/bin:$PATH"' >> /home/ubuntu/.bashrc
       echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
-      exec $SHELL
+      echo 'exec ...'
+      exec /home/ubuntu/.bashrc
+      echo 'exec done'
     fi
 
 
@@ -39,8 +41,12 @@ bash "Install rbenv and ruby" do
     else
       git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
       echo 'export PATH="/home/ubuntu/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
-      exec $SHELL
+      echo 'exec ...'
+      exec /home/ubuntu/.bashrc
+      echo 'exec done'
     fi
+
+    echo '/home/ubuntu/.bashrc end'
 
     rbenv install 2.5.0
     rbenv global 2.5.0
