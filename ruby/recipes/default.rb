@@ -47,7 +47,7 @@ bash "Install rbenv" do
 end
 
 execute 'sourcing' do
-  command 'source /home/ubuntu/.bashrc'
+  code 'source /home/ubuntu/.bashrc'
   user "ubuntu"
   environment ({'HOME' => '/home/ubuntu'})
 end
