@@ -1,16 +1,16 @@
 # Install rbenv and ruby
 bash "Install rbenv and ruby" do
   code <<-EOF
-    echo 'python.....'
-    echo "import pty; pty.spawn('/bin/bash')" > /tmp/asdf.py
-    python /tmp/asdf.py
-    echo 'end python.....'
 
-    su deploy
-    echo 121212 | sudo mkdir ~/hello999
+    su ubuntu
 
+    echo 'check user'
+    whoami
+    echo $HOME
+
+    sudo mkdir /home/ubuntu/curl33
+    echo 'dir created?''
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-    sudo mkdir ~/curl1
 
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
@@ -20,18 +20,15 @@ bash "Install rbenv and ruby" do
 
 
 
-    su deploy
-    echo 'check user'
-    whoami
-    echo $HOME
+
     cd
-    git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-    echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+    git clone https://github.com/rbenv/rbenv.git /home/ubuntu/.rbenv
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/ubuntu/.bashrc
+    echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
     exec $SHELL
 
-    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-    echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+    git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
+    echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
     exec $SHELL
 
     rbenv install 2.5.0
