@@ -17,8 +17,8 @@ bash "Install rbenv and ruby" do
 
     su deploy
     echo 'check user'
+    whoami
     echo $HOME
-    echo whoami
     cd
     git clone https://github.com/rbenv/rbenv.git ~/.rbenv
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
