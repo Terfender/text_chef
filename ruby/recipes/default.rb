@@ -55,9 +55,8 @@ end
 # Install ruby
 bash "Install ruby" do
   code <<-EOF
-    mkdir /home/ubuntu/sourcing
+    sudo -s
     source /home/ubuntu/.bashrc
-    mkdir /home/ubuntu/sourced
     rbenv install 2.5.0
     rbenv global 2.5.0
     ruby -v
