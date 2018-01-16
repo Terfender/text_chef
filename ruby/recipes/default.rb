@@ -51,9 +51,11 @@
 # Install ruby
 bash "Install ruby" do
   code <<-EOF
-    sudo -s
-    exec -l /home/ubuntu/.bashrc
+    # sudo -s
+    # exec -l /home/ubuntu/.bashrc
+    echo 'hi'
     source /home/ubuntu/.bashrc
+    echo 'bye'
     rbenv install 2.5.0
     rbenv global 2.5.0
     ruby -v
