@@ -20,10 +20,17 @@ bash "Install rbenv and ruby" do
 
 
     cd /home/ubuntu
-    git clone https://github.com/rbenv/rbenv.git /home/ubuntu/.rbenv
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/ubuntu/.bashrc
-    echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
-    exec $SHELL
+
+
+    if [ -d $directory_name ]
+    then
+        echo "/home/ubuntu/.rbenv already exists"
+    else
+      git clone https://github.com/rbenv/rbenv.git /home/ubuntu/.rbenv
+      echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/ubuntu/.bashrc
+      echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
+      exec $SHELL
+    fi
 
     git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
     echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
