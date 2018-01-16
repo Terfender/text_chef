@@ -5,8 +5,6 @@ bash "Install rbenv and ruby" do
     echo 'check user'
     whoami
     echo $HOME
-
-    sudo mkdir /home/ubuntu/curl33
     echo 'dir created?'
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 
@@ -30,7 +28,7 @@ bash "Install rbenv and ruby" do
       echo 'export PATH="/home/ubuntu/.rbenv/bin:$PATH"' >> /home/ubuntu/.bashrc
       echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
       echo 'exec ...'
-      exec /home/ubuntu/.bashrc
+      sudo exec /home/ubuntu/.bashrc
       echo 'exec done'
     fi
 
@@ -42,7 +40,7 @@ bash "Install rbenv and ruby" do
       git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
       echo 'export PATH="/home/ubuntu/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
       echo 'exec ...'
-      exec /home/ubuntu/.bashrc
+      sudo exec /home/ubuntu/.bashrc
       echo 'exec done'
     fi
 
