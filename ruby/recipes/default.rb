@@ -2,7 +2,6 @@
 bash "Install rbenv and ruby" do
   code <<-EOF
 
-    su ubuntu
 
     echo 'check user'
     whoami
@@ -37,6 +36,6 @@ bash "Install rbenv and ruby" do
 
     gem install bundler
   EOF
-  user "root"
+  user "ubuntu"
 
 end
