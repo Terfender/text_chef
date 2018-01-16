@@ -1,9 +1,11 @@
 # Install rbenv and ruby
 bash "Install rbenv and ruby" do
   code <<-EOF
-    sudo apt-get install libav-tools
-    sudo apt-get install libmagickcore-dev libmagickwand-dev libmagic-dev
-    sudo apt-get install build-essential checkinstall && apt-get build-dep imagemagick -y
+    sudo apt-get install -y libav-tools
+    
+    sudo apt-get install -y libmagickcore-dev libmagickwand-dev libmagic-dev
+
+    sudo apt-get install -y build-essential checkinstall && apt-get build-dep imagemagick
 
     cd /home/ubuntu
     sudo wget http://www.imagemagick.org/download/ImageMagick.tar.gz
