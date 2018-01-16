@@ -43,8 +43,6 @@ bash "Install rbenv and ruby" do
 
     echo '/home/ubuntu/.bashrc end'
 
-    mkdir '/home/ubuntu/installingRuby'
-
     rbenv install 2.5.0
     rbenv global 2.5.0
     ruby -v
