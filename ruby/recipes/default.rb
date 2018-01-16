@@ -32,9 +32,15 @@ bash "Install rbenv and ruby" do
       exec $SHELL
     fi
 
-    git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
-    echo 'export PATH="/home/ubuntu/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
-    exec $SHELL
+
+    if [ -d /home/ubuntu/.rbenv/plugins/ruby-build ]
+    then
+        echo "/home/ubuntu/.rbenv/plugins/ruby-build already exists"
+    else
+      git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
+      echo 'export PATH="/home/ubuntu/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
+      exec $SHELL
+    fi
 
     rbenv install 2.5.0
     rbenv global 2.5.0
