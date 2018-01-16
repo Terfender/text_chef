@@ -36,12 +36,12 @@ bash "Install rbenv and ruby" do
     echo 'exec ...'
     source /home/ubuntu/.bashrc
     echo 'exec done'
-    exec -l $SHELL
+    #exec -l $SHELL
 
     echo '/home/ubuntu/.bashrc end'
 
-    rbenv install 2.5.0
-    rbenv global 2.5.0
+    /home/ubuntu/.rbenv/bin/rbenv install 2.5.0
+    /home/ubuntu/.rbenv/bin/rbenv global 2.5.0
     ruby -v
 
     gem install bundler
