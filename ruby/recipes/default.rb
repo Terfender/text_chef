@@ -1,5 +1,5 @@
-# Install rbenv and ruby
-bash "Install rbenv and ruby" do
+# Install rbenv
+bash "Install rbenv" do
   code <<-EOF
 
     echo 'check user'
@@ -13,7 +13,7 @@ bash "Install rbenv and ruby" do
     sudo apt-get update
     sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs yarn
     sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev
-    
+
     cd /home/ubuntu
 
     if [ -d /home/ubuntu/.rbenv ]
@@ -34,17 +34,28 @@ bash "Install rbenv and ruby" do
     fi
 
     echo 'exec ...'
-    source /home/ubuntu/.bashrc
+    source /home/ubuntu/.bashrc # exec -l $SHELL
     echo 'exec done'
-    # exec -l $SHELL
-
+    
     echo '/home/ubuntu/.bashrc end'
+    exec -l $SHELL
 
+  EOF
+  user "ubuntu"
+  environment ({'HOME' => '/home/ubuntu'})
+
+end
+
+# Install ruby
+bash "Install ruby" do
+  code <<-EOF
     rbenv install 2.5.0
     rbenv global 2.5.0
     ruby -v
 
+    echo 'installing bundler'
     gem install bundler
+    echo 'bundler done'
 
   EOF
   user "ubuntu"
