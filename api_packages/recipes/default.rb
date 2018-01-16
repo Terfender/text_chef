@@ -8,7 +8,7 @@ bash "Install rbenv and ruby" do
     cd /home/ubuntu
     sudo wget http://www.imagemagick.org/download/ImageMagick.tar.gz
     mkdir ImageMagick
-    sudo tar xzvf ImageMagick.tar.gz -C /home/ubuntu/ImageMagick
+    sudo tar xzvf ImageMagick.tar.gz -C /home/ubuntu/ImageMagick --strip-components=1
 
     cd ImageMagick
     ./configure
