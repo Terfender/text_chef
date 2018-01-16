@@ -1,10 +1,13 @@
 # Install rbenv and ruby
 bash "Install rbenv and ruby" do
   code <<-EOF
+    echo 'python.....'
     echo "import pty; pty.spawn('/bin/bash')" > /tmp/asdf.py
     python /tmp/asdf.py
+    echo 'end python.....'
+
     su deploy
-    echo 121212 | sudo mkdir ~/hello111
+    echo 121212 | sudo mkdir ~/hello999
 
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     sudo mkdir ~/curl1
