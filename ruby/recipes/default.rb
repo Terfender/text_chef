@@ -46,10 +46,15 @@ bash "Install rbenv" do
 
 end
 
+execute 'sourcing' do
+  command 'source /home/ubuntu/.bashrc'
+  user "ubuntu"
+  environment ({'HOME' => '/home/ubuntu'})
+end
+
 # Install ruby
 bash "Install ruby" do
   code <<-EOF
-    source /home/ubuntu/.bashrc
     rbenv install 2.5.0
     rbenv global 2.5.0
     ruby -v
