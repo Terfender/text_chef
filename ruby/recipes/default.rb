@@ -2,7 +2,6 @@
 bash "Install rbenv and ruby" do
   code <<-EOF
 
-
     echo 'check user'
     whoami
     echo $HOME
@@ -20,7 +19,7 @@ bash "Install rbenv and ruby" do
 
 
 
-    cd
+    cd /home/ubuntu
     git clone https://github.com/rbenv/rbenv.git /home/ubuntu/.rbenv
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/ubuntu/.bashrc
     echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
@@ -35,6 +34,7 @@ bash "Install rbenv and ruby" do
     ruby -v
 
     gem install bundler
+
   EOF
   user "ubuntu"
 
