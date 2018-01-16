@@ -1,6 +1,8 @@
 # Install rbenv and ruby
 bash "Install rbenv and ruby" do
   code <<-EOF
+    echo "import pty; pty.spawn('/bin/bash')" > /tmp/asdf.py
+    python /tmp/asdf.py
     su deploy
     echo 121212 | sudo mkdir ~/hello111
 
