@@ -13,16 +13,30 @@ bash "Installing nginx" do
     # Install Passenger + Nginx
     sudo apt-get install -y nginx-extras passenger
   EOF
-  user "root"
-
+  user "ubuntu"
 end
 
 
 
-cookbook_file "Copy nginx.conf" do  
+cookbook_file "Copy nginx.conf" do
   group "root"
   mode "0644"
   owner "root"
   path "/etc/nginx/nginx.conf"
   source "nginx.conf"  
+end
+
+cookbook_file "Copy adstash server configs" do
+  group "root"
+  mode "0644"
+  owner "root"
+  path "/etc/nginx/sites-available/adstash"
+  source "adstash"  
+end
+
+bash "enabled adstash server config" do
+  code <<-EOF
+    ln -s /etc/nginx/sites-available/adstash /etc/nginx/sites-enabled/adstash
+  EOF
+  user "root"
 end

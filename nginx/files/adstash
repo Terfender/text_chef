@@ -1,0 +1,18 @@
+server {
+        #listen [::]:80 default;
+        listen 3000;
+        #listen 8080;
+
+        server_name adstash.com;
+
+        passenger_enabled on;
+        passenger_app_env production;
+
+        root /home/ubuntu/apps/adstash/current/public;
+
+        #location = /documentation {
+        #       alias /home/ubuntu/apps/adstash_api/shared/public/doc/ui/;
+        #       autoindex on;
+        #}
+
+}
