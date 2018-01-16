@@ -44,5 +44,6 @@ bash "Install rbenv and ruby" do
 
   EOF
   user "ubuntu"
+  home '/home/ubuntu'
 
 end
