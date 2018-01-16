@@ -15,9 +15,9 @@ bash "Install rbenv and ruby" do
 
     cd ImageMagick
     sudo ./configure
-    make clean
-    make
-    checkinstall
+    sudo make clean
+    sudo make
+    sudo checkinstall
     sudo sh -c "ldconfig /usr/local/lib"
     magick -version
 
