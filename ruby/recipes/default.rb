@@ -24,10 +24,6 @@ bash "Install rbenv and ruby" do
       echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
     fi
 
-    echo 'exec ...'
-    source /home/ubuntu/.bashrc
-    echo 'exec done'
-
     if [ -d /home/ubuntu/.rbenv/plugins/ruby-build ]
     then
         echo "/home/ubuntu/.rbenv/plugins/ruby-build already exists"
@@ -39,7 +35,7 @@ bash "Install rbenv and ruby" do
     echo 'exec ...'
     source /home/ubuntu/.bashrc
     echo 'exec done'
-    # exec -l $SHELL
+    exec -l $SHELL
 
     echo '/home/ubuntu/.bashrc end'
 
