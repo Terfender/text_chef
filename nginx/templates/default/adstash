@@ -1,0 +1,18 @@
+server {
+        #listen [::]:80 default;
+        listen 3000;
+        #listen 8080;
+
+        server_name ec2-54-235-235-4.compute-1.amazonaws.com;
+
+        passenger_enabled on;
+        passenger_app_env production;
+
+        root /home/ubuntu/apps/adstash_api/current/public;
+
+        #location = /documentation {
+        #       alias /home/ubuntu/apps/adstash_api/shared/public/doc/ui/;
+        #       autoindex on;
+        #}
+
+}
