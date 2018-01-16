@@ -36,7 +36,7 @@ bash "Install rbenv and ruby" do
     echo 'exec ...'
     source /home/ubuntu/.bashrc
     echo 'exec done'
-    # exec -l $SHELL
+    exec -l $SHELL
 
     echo '/home/ubuntu/.bashrc end'
 
