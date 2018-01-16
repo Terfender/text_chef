@@ -35,6 +35,6 @@ bash "Install rbenv and ruby" do
 
     gem install bundler
   EOF
-  user "root"
+  user "deploy"
 
 end
