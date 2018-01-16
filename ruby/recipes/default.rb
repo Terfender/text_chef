@@ -8,7 +8,7 @@ bash "Install rbenv and ruby" do
     echo $HOME
 
     sudo mkdir /home/ubuntu/curl33
-    echo 'dir created?''
+    echo 'dir created?'
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
