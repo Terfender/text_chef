@@ -5,20 +5,15 @@ bash "Install rbenv and ruby" do
     echo 'check user'
     whoami
     echo $HOME
-    echo 'dir created?'
+    
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
     sudo apt-get update
     sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs yarn
 
-
-
-
     cd /home/ubuntu
-
 
     if [ -d /home/ubuntu/.rbenv ]
     then
@@ -29,7 +24,7 @@ bash "Install rbenv and ruby" do
       echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
       echo 'exec ...'
       source /home/ubuntu/.bashrc
-      # exec /home/ubuntu/.bashrc
+      # exec -l $SHELL
       echo 'exec done'
     fi
 
@@ -41,8 +36,8 @@ bash "Install rbenv and ruby" do
       git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
       echo 'export PATH="/home/ubuntu/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
       echo 'exec ...'
-      # exec /home/ubuntu/.bashrc
-      source /home/ubuntu/.bashrc
+      # exec -l $SHELL
+      source /home/ubuntu/.bashrc 
       echo 'exec done'
     fi
 
