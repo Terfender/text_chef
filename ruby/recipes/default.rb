@@ -28,7 +28,8 @@ bash "Install rbenv and ruby" do
       echo 'export PATH="/home/ubuntu/.rbenv/bin:$PATH"' >> /home/ubuntu/.bashrc
       echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
       echo 'exec ...'
-      sudo exec /home/ubuntu/.bashrc
+      source /home/ubuntu/.bashrc
+      # exec /home/ubuntu/.bashrc
       echo 'exec done'
     fi
 
@@ -40,7 +41,8 @@ bash "Install rbenv and ruby" do
       git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
       echo 'export PATH="/home/ubuntu/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
       echo 'exec ...'
-      sudo exec /home/ubuntu/.bashrc
+      # exec /home/ubuntu/.bashrc
+      source /home/ubuntu/.bashrc
       echo 'exec done'
     fi
 
