@@ -1,7 +1,6 @@
 # Install rbenv and ruby
 bash "Install rbenv and ruby" do
   code <<-EOF
-    sudo -i
     su ubuntu
     sudo mkdir ~/hello1
 
@@ -32,7 +31,7 @@ bash "Install rbenv and ruby" do
 
     gem install bundler
   EOF
-  user "ubuntu"
+  user "root"
 
 end
 
