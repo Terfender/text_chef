@@ -3,9 +3,11 @@ bash "Install rbenv and ruby" do
   code <<-EOF
     sudo -i
     su ubuntu
-    sudo mkdir ~/hello
+    sudo mkdir ~/hello1
+
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-    sudo mkdir ~/curl
+    sudo mkdir ~/curl1
+
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
@@ -30,7 +32,7 @@ bash "Install rbenv and ruby" do
 
     gem install bundler
   EOF
-  user "root"
+  user "ubuntu"
 
 end
 
