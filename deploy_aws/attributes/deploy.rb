@@ -19,7 +19,7 @@ include_attribute 'deploy::rails_stack'
 
 
 default[:opsworks][:deploy_user][:shell] = '/bin/bash'
-default[:opsworks][:deploy_user][:user] = 'ubuntu'
+default[:opsworks][:deploy_user][:user] = 'deploy'
 default[:opsworks][:deploy_keep_releases] = 5
 
 # The deploy provider used. Set to one of
