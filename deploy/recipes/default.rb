@@ -1,9 +1,10 @@
-Chef::Log.debug('testing deployment')
+include_recipe "deploy"
+Chef::Log.info('testing deployment')
 
 node[:deploy].each do |application, deploy|
-  Chef::Log.debug(application)
-  Chef::Log.debug(deploy)
-  Chef::Log.debug('testing deployment2')
+  Chef::Log.info(application)
+  Chef::Log.info(deploy)
+  Chef::Log.info('testing deployment2')
 end
 # include_recipe 'dependencies'
 
