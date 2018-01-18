@@ -44,23 +44,52 @@ output = File.open(tmp_key_path, 'w')
 output << ssh_key
 output.close
 
-
-`
 # To skip adding host fingerprint
-echo "StrictHostKeyChecking no" >> #{ssh_config}
-
-chmod 400 #{tmp_key_path}
-
-ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone #{revision} #{git_url} #{git_dir}'
-
-rm #{tmp_key_path}
-
-# To remove the last line added to ssh_config
-tail -n 1 '#{ssh_config}' | wc -c | xargs -I {} truncate '#{ssh_config}' -s -{}
-
-ln -s '#{git_dir}' '#{current_release}'
+`
+  echo "StrictHostKeyChecking no" >> #{ssh_config}
+  chmod 400 #{tmp_key_path}
 `
 
+# clone adstash-app repo
+`
+  ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone #{revision} #{git_url} #{git_dir}'
+`
+
+
+# clone adstash engines
+engines = [
+  {
+    name:     'ad_finance',
+    url:      'git@bitbucket.org:linkett/adstash-app.git'.
+    revision: 'master'
+  },
+  {
+    name:     'ad_stash',
+    url:      'git@bitbucket.org:linkett/adstash_api.git',
+    revision: 'master'
+  }
+]
+engines.each do |engine|
+  `
+    cd #{current_release}/engines
+    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone #{revision} #{engine.url} #{engine.name}'
+  `
+end
+
+`
+  cd #{current_release}
+  bundle install
+`
+
+
+# clean up
+`
+  rm #{tmp_key_path}
+  # To remove the last line added to ssh_config
+  tail -n 1 '#{ssh_config}' | wc -c | xargs -I {} truncate '#{ssh_config}' -s -{}
+
+  ln -s '#{git_dir}' '#{current_release}'
+`
 def release_dir
   Time.now.to_s.gsub(/\D+/, '')[0,13]
 end

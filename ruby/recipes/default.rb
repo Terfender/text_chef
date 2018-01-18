@@ -44,7 +44,7 @@ bash "Install rbenv and ruby" do
     /home/ubuntu/.rbenv/bin/rbenv global 2.5.0
     ruby -v
 
-    gem install bundler
+    /home/ubuntu/.rbenv/shims/gem install bundler
 
   EOF
   user "ubuntu"
