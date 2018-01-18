@@ -4,6 +4,7 @@ bash "Install rbenv and ruby" do
     sudo apt-get install -y libav-tools
 
     sudo apt-get install -y libmagickcore-dev libmagickwand-dev libmagic-dev
+    sudo apt-get install -y libpq-dev
 
     sudo apt-get install -y build-essential checkinstall && apt-get build-dep imagemagick
 

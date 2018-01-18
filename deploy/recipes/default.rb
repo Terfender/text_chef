@@ -21,6 +21,7 @@ if !File.directory?("#{deploy_root}/#{app_name}")
   mkdir releases shared
   cd shared
   mkdir bin bundle config log public tmp vendor
+  sudo chown -R ubuntu:ubuntu #{deploy_root}/#{app_name}
   `
 end
 
@@ -40,6 +41,8 @@ if releases_dirs.count > keep_releases
 end
 
 
+
+# File.write
 output = File.open(tmp_key_path, 'w')
 output << ssh_key
 output.close
@@ -60,7 +63,7 @@ output.close
 engines = [
   {
     name:     'ad_finance',
-    url:      'git@bitbucket.org:linkett/adstash-app.git',
+    url:      'git@bitbucket.org:linkett/adfinance.git',
     revision: 'master'
   },
   {
@@ -70,23 +73,24 @@ engines = [
   }
 ]
 engines.each do |engine|
+  dir = "#{git_dir}/engines/#{engine[:name]}"
   `
-    cd #{current_release}/engines
-    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone -b #{revision} #{engine[:url]} #{engine[:name]}'
+    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone -b #{engine[:revision]} #{engine[:url]} #{dir}'
   `
 end
 
 `
-  cd #{current_release}
-  bundle install
+  cd #{current_release} && bundle install 
 `
 
 
 # clean up
 `
+  sudo chown -R ubuntu:ubuntu #{git_dir}
   rm #{tmp_key_path}
   # To remove the last line added to ssh_config
-  tail -n 1 '#{ssh_config}' | wc -c | xargs -I {} truncate '#{ssh_config}' -s -{}
+  sed '$ d' '#{ssh_config}' &> '#{ssh_config}'
+  #tail -n 1 '#{ssh_config}' | wc -c | xargs -I {} truncate '#{ssh_config}' -s -{}
 
   ln -s '#{git_dir}' '#{current_release}'
 `
