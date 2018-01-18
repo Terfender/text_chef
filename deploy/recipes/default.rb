@@ -8,7 +8,7 @@ ssh_key         = app['app_source']['ssh_key']
 git_url         = app['app_source']['url']
 releases_dir    = "#{deploy_root}/#{app_name}/releases"
 current_release = "#{deploy_root}/#{app_name}/current"
-shared_dir      = "#{current_release}/shared"
+shared_dir      = "#{deploy_root}/#{app_name}/shared"
 git_dir         = "#{releases_dir}/#{Time.now.to_s.gsub(/\D+/, '')[0,13]}"
 tmp_key_path    = "#{deploy_root}/#{app_name}/key"
 ssh_config      = '/etc/ssh/ssh_config'
@@ -58,16 +58,16 @@ File.write(tmp_key_path, ssh_key)
 
 # link shared dir & current_release
 `
-  rm '#{current_release}'
+  rm -rf '#{current_release}'
   ln -s '#{git_dir}' '#{current_release}'
 
   rm -rf '#{current_release}/bin'
-  ln -s '#{current_release}/bin' '#{shared_dir}/bin'
+  ln -s '#{shared_dir}/bin' '#{current_release}/bin'
 
   rm -rf '#{current_release}/log'
-  ln -s '#{current_release}/log' '#{shared_dir}/log'
+  ln -s '#{shared_dir}/log' '#{current_release}/log'
 
-  rm '#{shared_dir}/config/secrets.yml.key'
+  rm -rf '#{shared_dir}/config/secrets.yml.key'
   echo #{environment['ADSTASH_APP_SECRET']} >> '#{shared_dir}/config/secrets.yml.key'
   ln -s '#{current_release}/config/secrets.yml.key' '#{shared_dir}/config/secrets.yml.key'
 `
@@ -94,7 +94,7 @@ engines.each do |engine|
   secret  = environment[engine[:env_secret]]
   if secret
     `
-      rm '#{dir}/config/secrets.yml.key'
+      rm -rf '#{dir}/config/secrets.yml.key'
       echo #{secret} >> '#{dir}/config/secrets.yml.key'
     `
   end
