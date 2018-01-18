@@ -60,7 +60,7 @@ output.close
 engines = [
   {
     name:     'ad_finance',
-    url:      'git@bitbucket.org:linkett/adstash-app.git'.
+    url:      'git@bitbucket.org:linkett/adstash-app.git',
     revision: 'master'
   },
   {
@@ -72,7 +72,7 @@ engines = [
 engines.each do |engine|
   `
     cd #{current_release}/engines
-    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone #{revision} #{engine.url} #{engine.name}'
+    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone -b #{revision} #{engine[:url]} #{engine[:name]}'
   `
 end
 
