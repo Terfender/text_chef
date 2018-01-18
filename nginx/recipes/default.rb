@@ -36,6 +36,7 @@ end
 
 bash "enabled adstash server config" do
   code <<-EOF
+    rm /etc/nginx/sites-enabled/adstash
     ln -s /etc/nginx/sites-available/adstash /etc/nginx/sites-enabled/adstash
   EOF
   user "root"

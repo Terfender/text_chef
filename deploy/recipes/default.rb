@@ -32,6 +32,7 @@ Dir.foreach(releases_dir) do |item|
   releases_dirs << item.to_i
 end
 
+
 if releases_dirs.count > keep_releases
   releases_dirs.sort.take(keep_releases).each do |release|
     `rm -rf #{releases_dir}/#{release}`
