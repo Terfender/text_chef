@@ -67,7 +67,7 @@ File.write(tmp_key_path, ssh_key)
   rm -rf '#{current_release}/log'
   ln -s '#{shared_dir}/log' '#{current_release}/log'
 
-  rm -rf '#{shared_dir}/config/secrets.yml.key'
+  rm -rf '#{shared_dir}/config/secrets.yml.key' '#{current_release}/config/secrets.yml.key'
   echo #{environment['ADSTASH_APP_SECRET']} >> '#{shared_dir}/config/secrets.yml.key'
   ln -s '#{shared_dir}/config/secrets.yml.key' '#{current_release}/config/secrets.yml.key'
 `
@@ -92,15 +92,15 @@ engines = [
 engines.each do |engine|
   dir     = "#{git_dir}/engines/#{engine[:name]}"
   secret  = environment[engine[:env_secret]]
+  `
+    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone -b #{engine[:revision]} #{engine[:url]} #{dir}'
+  `
   if secret
     `
       rm -rf '#{dir}/config/secrets.yml.key'
       echo #{secret} >> '#{dir}/config/secrets.yml.key'
     `
   end
-  `
-    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone -b #{engine[:revision]} #{engine[:url]} #{dir}'
-  `
 end
 
 
