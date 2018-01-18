@@ -69,7 +69,7 @@ File.write(tmp_key_path, ssh_key)
 
   rm -rf '#{shared_dir}/config/secrets.yml.key'
   echo #{environment['ADSTASH_APP_SECRET']} >> '#{shared_dir}/config/secrets.yml.key'
-  ln -s '#{current_release}/config/secrets.yml.key' '#{shared_dir}/config/secrets.yml.key'
+  ln -s '#{shared_dir}/config/secrets.yml.key' '#{current_release}/config/secrets.yml.key'
 `
 
 
