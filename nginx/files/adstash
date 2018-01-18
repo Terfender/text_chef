@@ -8,7 +8,7 @@ server {
         passenger_enabled on;
         passenger_app_env production;
 
-        root /home/ubuntu/apps/adstash/current/public;
+        root /home/ubuntu/apps/AdStash/current/public;
 
         #location = /documentation {
         #       alias /home/ubuntu/apps/adstash_api/shared/public/doc/ui/;
