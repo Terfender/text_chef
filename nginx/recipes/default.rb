@@ -60,3 +60,10 @@ bash "enabled adstash server config" do
   EOF
   user "root"
 end
+
+
+
+bash "Restart nginx to pick up configs changes" do
+  code "sudo service nginx restart"
+  user "root"
+end
