@@ -1,5 +1,7 @@
-# Install rbenv and ruby
-bash "Install rbenv and ruby" do
+# Install Redis
+# Retrieved from https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis
+# in Jan 19, 2018
+bash "Install redis" do
   code <<-EOF
     sudo apt-get update -y
     sudo apt-get install -y build-essential
