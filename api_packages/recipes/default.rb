@@ -1,11 +1,7 @@
-# Install rbenv and ruby
-bash "Install rbenv and ruby" do
+# Install API packages
+bash "Install API packages" do
   code <<-EOF
-    sudo apt-get install -y libav-tools
-
-    sudo apt-get install -y libmagickcore-dev libmagickwand-dev libmagic-dev
-    sudo apt-get install -y libpq-dev
-
+    sudo apt-get install -y libav-tools libmagickcore-dev libmagickwand-dev libmagic-dev libpq-dev
     sudo apt-get install -y build-essential checkinstall && apt-get build-dep imagemagick
 
     cd /home/ubuntu
