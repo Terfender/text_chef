@@ -38,6 +38,9 @@ bash "enabled adstash server config" do
   code <<-EOF
     rm /etc/nginx/sites-enabled/adstash
     ln -s /etc/nginx/sites-available/adstash /etc/nginx/sites-enabled/adstash
+
+    # remove default
+    rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
   EOF
   user "root"
 end
