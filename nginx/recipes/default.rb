@@ -1,4 +1,6 @@
-# Installing nginx
+# Installing nginx and passenger
+# Retrieved from https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/ownserver/nginx/oss/xenial/install_passenger.html
+# In Jan 19, 2018
 bash "Installing nginx" do
   code <<-EOF
 
@@ -26,6 +28,8 @@ cookbook_file "Copy nginx.conf" do
   source "nginx.conf"  
 end
 
+
+
 cookbook_file "Copy adstash server configs" do
   group "root"
   mode "0644"
@@ -33,6 +37,18 @@ cookbook_file "Copy adstash server configs" do
   path "/etc/nginx/sites-available/adstash"
   source "adstash"  
 end
+
+
+
+cookbook_file "Copy passenger.conf" do
+  group "root"
+  mode "0644"
+  owner "root"
+  path "/etc/nginx/passenger.conf"
+  source "passenger.conf"  
+end
+
+
 
 bash "enabled adstash server config" do
   code <<-EOF
