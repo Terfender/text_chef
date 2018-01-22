@@ -193,9 +193,18 @@ end
   sudo chown -R ubuntu:ubuntu #{git_dir}
 
 
+  #rm -rf '#{current_release}'
+  ln -fs '#{git_dir}' '#{current_release}'
+`
 
-  rm -rf '#{current_release}'
-  ln -s '#{git_dir}' '#{current_release}'
+
+
+# restart app
+# recommended way according to https://www.phusionpassenger.com/library/admin/apache/restart_app.html
+# and reload nginx
+`
+  sudo service nginx reload
+  passenger-config restart-app '#{current_release}'
 `
 
 
@@ -206,16 +215,6 @@ end
 
   # To remove the last line added to ssh_config
   sed '$ d' '#{ssh_config}' &> '#{ssh_config}'
-`
-
-
-
-# restart app
-# recommended way according to https://www.phusionpassenger.com/library/admin/apache/restart_app.html
-# and reload nginx
-`
-  passenger-config restart-app '#{current_release}'
-  sudo service nginx reload
 `
 
 
