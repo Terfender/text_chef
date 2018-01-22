@@ -1,4 +1,4 @@
-name        "ruby"
-description "Installas rbenv and ruby"
+name        "API Packages"
+description "Installs API Packages"
 maintainer  "AdStash"
 version     "1.0.0"
