@@ -8,6 +8,7 @@ bash "Install redis" do
     sudo apt-get install tcl8.5
 
     cd /home/ubuntu
+    rm -rf redis-stable*
     wget http://download.redis.io/releases/redis-stable.tar.gz
     tar xzf redis-stable.tar.gz
 
