@@ -1,8 +1,8 @@
 server {
         #listen [::]:80 default;
-        listen 3000;
+        listen 80;
 
-        server_name adstash.com;
+        #server_name adstash.com;
 
         passenger_enabled on;
         passenger_app_env production;
