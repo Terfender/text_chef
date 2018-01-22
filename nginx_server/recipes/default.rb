@@ -25,6 +25,7 @@ cookbook_file "Copy nginx.conf" do
   mode "0644"
   owner "root"
   path "/etc/nginx/nginx.conf"
+  cookbook 'nginx_server'
   source "nginx.conf"  
 end
 
@@ -35,6 +36,7 @@ cookbook_file "Copy adstash server configs" do
   mode "0644"
   owner "root"
   path "/etc/nginx/sites-available/adstash"
+  cookbook 'nginx_server'
   source "adstash"  
 end
 
@@ -45,6 +47,7 @@ cookbook_file "Copy passenger.conf" do
   mode "0644"
   owner "root"
   path "/etc/nginx/passenger.conf"
+  cookbook 'nginx_server'
   source "passenger.conf"  
 end
 
