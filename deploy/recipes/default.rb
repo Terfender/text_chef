@@ -119,17 +119,20 @@ end
 
 data_sources.each do |source|
   # loop trough all RDS layers and find ARN of app DB instance
-  data_source = Source if source['rds_db_instance_arn'] == app_arn
+  data_source = source if source['rds_db_instance_arn'] == app_arn
 end
 
-template "#{shared_dir}/config/database.yml" do
-  source "database.yml.erb"
-  variables( 
-      :host => data_source['address'],
-      :port => data_source['port'],
-      :db_user => data_source['db_user'],
-      :password => data_source['db_password']
-  )
+template "database.yml" do
+  source "database.erb"
+  path "#{shared_dir}/config/database.yml"
+  owner 'ubuntu'
+  group 'ubuntu'
+  variables({
+      host:       data_source['address'],
+      port:       data_source['port'],
+      username:   data_source['db_user'],
+      password:   data_source['db_password']
+  })
 end
 
 
