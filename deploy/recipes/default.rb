@@ -176,6 +176,18 @@ end
 
 
 
+# precompile assets
+bash "precompile assets" do
+  cwd current_release
+  code <<-EOF
+    /home/ubuntu/.rbenv/shims/bundle exec rake assets:precompile RAILS_ENV=production
+  EOF
+  user "ubuntu"
+  environment ({'HOME' => '/home/ubuntu'})
+end
+
+
+
 # restart app
 # recommended way according to https://www.phusionpassenger.com/library/admin/apache/restart_app.html
 `
