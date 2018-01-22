@@ -10,9 +10,9 @@ server {
         root /home/ubuntu/apps/AdStash/current/public;
         passenger_app_root /home/ubuntu/apps/AdStash/current;
 
-        #location = /documentation {
-        #       alias /home/ubuntu/apps/adstash_api/shared/public/doc/ui/;
-        #       autoindex on;
-        #}
+        location = /elb_ping {
+               alias /home/ubuntu/apps/elb_ping/;
+               autoindex on;
+        }
 
 }

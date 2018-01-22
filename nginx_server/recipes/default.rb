@@ -66,6 +66,17 @@ end
 
 
 
+cookbook_file "copy ELB ping test" do
+  group "root"
+  mode "0644"
+  owner "ubuntu"
+  path "/home/ubuntu/apps/elb_ping/index.html"
+  cookbook 'nginx_server'
+  source "elb_ping.html"  
+end
+
+
+
 bash "Restart nginx to pick up configs changes" do
   code "sudo service nginx restart"
   user "root"
