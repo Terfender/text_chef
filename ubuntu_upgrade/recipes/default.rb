@@ -8,7 +8,7 @@ end
 # but it does not install or upgrade any packages
 # source: https://askubuntu.com/a/94104
 execute "apt-get update" do
-  command "apt-get update"
+  command "apt-get update -y"
   user "root"
 end
 
@@ -18,6 +18,6 @@ end
 # After updating the lists, the package manager knows about available updates for the software you have installed.
 # source: https://askubuntu.com/a/94104
 execute "apt-get upgrade" do
-  command "apt-get upgrade"
+  command "apt-get upgrade -y"
   user "root"
 end
