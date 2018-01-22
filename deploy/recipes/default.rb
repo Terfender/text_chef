@@ -146,13 +146,6 @@ end
 
 
 
-# bundle app gems
-`
-  cd '#{current_release}'' &&  /home/ubuntu/.rbenv/shims/bundle install --without development test
-`
-
-
-
 # clean up
 `
   sudo chown -R ubuntu:ubuntu #{git_dir}
@@ -161,6 +154,18 @@ end
   # To remove the last line added to ssh_config
   sed '$ d' '#{ssh_config}' &> '#{ssh_config}'
 `
+
+
+
+# bundle app gems
+bash "bundle app gems" do
+  cwd current_release
+  code <<-EOF
+    /home/ubuntu/.rbenv/shims/bundle install #--without development test
+  EOF
+  user "ubuntu"
+  environment ({'HOME' => '/home/ubuntu'})
+end
 
 
 
