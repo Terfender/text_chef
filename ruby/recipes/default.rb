@@ -1,4 +1,8 @@
 # Install rbenv and ruby
+ruby_version  = '2.5.0'
+rbenv_path    = '/home/ubuntu/.rbenv'
+rbenv         = "#{rbenv_path}/bin/rbenv"
+
 bash "Install rbenv and ruby" do
   code <<-EOF
   
@@ -9,34 +13,41 @@ bash "Install rbenv and ruby" do
     sudo apt-get update
     sudo apt-get install -y git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev nodejs yarn
     
-    cd /home/ubuntu
 
-    if [ -d /home/ubuntu/.rbenv ]
+    if [ -d '#{rbenv_path}' ]
     then
-        echo "/home/ubuntu/.rbenv already exists"
+        echo "'#{rbenv_path}' already exists"
     else
-      git clone https://github.com/rbenv/rbenv.git /home/ubuntu/.rbenv
-      echo 'export PATH="/home/ubuntu/.rbenv/bin:$PATH"' >> /home/ubuntu/.bashrc
+      git clone https://github.com/rbenv/rbenv.git '#{rbenv_path}'
+      echo 'export PATH="'#{rbenv_path}'/bin:$PATH"' >> /home/ubuntu/.bashrc
       echo 'eval "$(rbenv init -)"' >> /home/ubuntu/.bashrc
     fi
 
-    if [ -d /home/ubuntu/.rbenv/plugins/ruby-build ]
+    if [ -d '#{rbenv_path}'/plugins/ruby-build ]
     then
-        echo "/home/ubuntu/.rbenv/plugins/ruby-build already exists"
+        echo "'#{rbenv_path}'/plugins/ruby-build already exists"
     else
-      git clone https://github.com/rbenv/ruby-build.git /home/ubuntu/.rbenv/plugins/ruby-build
-      echo 'export PATH="/home/ubuntu/.rbenv/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
+      git clone https://github.com/rbenv/ruby-build.git '#{rbenv_path}'/plugins/ruby-build
+      echo 'export PATH="'#{rbenv_path}'/plugins/ruby-build/bin:$PATH"' >> /home/ubuntu/.bashrc
     fi
 
     source /home/ubuntu/.bashrc
     echo 'exec done'
     #exec -l $SHELL
 
-    /home/ubuntu/.rbenv/bin/rbenv install 2.5.0
-    /home/ubuntu/.rbenv/bin/rbenv global 2.5.0
-    ruby -v
 
-    /home/ubuntu/.rbenv/shims/gem install bundler
+    if [ -d '#{rbenv_path}'/versions/#{ruby_version} ]
+    then
+        echo "version '#{ruby_version}' already installed"
+    else
+      '#{rbenv}' install #{ruby_version}
+    fi
+    
+    '#{rbenv}' global #{ruby_version}
+
+    '#{rbenv_path}'/shims/ruby -v
+
+    sudo -u ubuntu '#{rbenv_path}'/shims/gem install bundler
 
   EOF
   user "ubuntu"
