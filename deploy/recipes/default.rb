@@ -140,7 +140,7 @@ end
 
 # bundle app gems
 `
-  cd #{current_release} && bundle install --without development test
+  cd '#{current_release}'' && bundle install --without development test
 `
 
 
@@ -153,6 +153,19 @@ end
   # To remove the last line added to ssh_config
   sed '$ d' '#{ssh_config}' &> '#{ssh_config}'
 `
+
+
+
+# run migration
+bash "run migration" do
+  code <<-EOF
+    cd '#{current_release}'
+    rake db:migrate
+  EOF
+  user "ubuntu"
+  environment ({'HOME' => '/home/ubuntu'})
+
+end
 
 
 
