@@ -123,9 +123,10 @@ data_sources.each do |source|
 end
 
 template "database.yml" do
-  source "database.erb"
+  source "database.yml.erb"
   path "#{shared_dir}/config/database.yml"
   owner 'ubuntu'
+  cookbook 'deploy'
   group 'ubuntu'
   variables({
       host:       data_source['address'],
