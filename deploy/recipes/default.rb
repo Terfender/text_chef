@@ -148,7 +148,7 @@ end
 
 # bundle app gems
 `
-  cd '#{current_release}'' && bundle install --without development test
+  cd '#{current_release}'' && bundle install
 `
 
 
