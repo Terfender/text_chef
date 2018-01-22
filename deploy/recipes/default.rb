@@ -138,6 +138,14 @@ end
 
 
 
+# create symbolic link to database.yml
+`
+  rm -rf '#{shared_dir}/config/database.yml' '#{current_release}/config/database.yml'
+  ln -s '#{shared_dir}/config/database.yml' '#{current_release}/config/database.yml'
+`
+
+
+
 # bundle app gems
 `
   cd '#{current_release}'' && bundle install --without development test
@@ -158,13 +166,12 @@ end
 
 # run migration
 bash "run migration" do
+  cwd current_release
   code <<-EOF
-    cd '#{current_release}'
-    rake db:migrate
+    /home/ubuntu/.rbenv/shims/bundle exec rake db:migrate RAILS_ENV=production
   EOF
   user "ubuntu"
   environment ({'HOME' => '/home/ubuntu'})
-
 end
 
 
