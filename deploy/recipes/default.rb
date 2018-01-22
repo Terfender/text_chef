@@ -133,18 +133,6 @@ end
 
 
 
-# run migration
-bash "run migration" do
-  cwd git_dir
-  code <<-EOF
-    '#{bundle_path}' exec rake db:migrate RAILS_ENV=production
-  EOF
-  user "ubuntu"
-  environment ({'HOME' => '/home/ubuntu'})
-end
-
-
-
 # precompile assets
 bash "precompile assets" do
   cwd git_dir
@@ -196,6 +184,11 @@ end
   #rm -rf '#{current_release}'
   ln -fs '#{git_dir}' '#{current_release}'
 `
+
+
+
+# run migration
+include_recipe 'migrations'
 
 
 
