@@ -13,6 +13,7 @@ shared_dir      = "#{deploy_root}/#{app_name}/shared"
 git_dir         = "#{releases_dir}/#{Time.now.to_s.gsub(/\D+/, '')[0,13]}"
 tmp_key_path    = "#{deploy_root}/#{app_name}/key"
 ssh_config      = '/etc/ssh/ssh_config'
+bundle_path     = '/home/ubuntu/.rbenv/shims/bundle'
 keep_releases   = 5
 
 
@@ -53,24 +54,6 @@ File.write(tmp_key_path, ssh_key)
 # clone adstash-app repo
 `
   ssh-agent bash -c 'ssh-add '#{tmp_key_path}'; git clone #{revision} #{git_url} '#{git_dir}''
-`
-
-
-
-# link shared dir & current_release
-`
-  rm -rf '#{current_release}'
-  ln -s '#{git_dir}' '#{current_release}'
-
-  rm -rf '#{current_release}/bin'
-  ln -s '#{shared_dir}/bin' '#{current_release}/bin'
-
-  rm -rf '#{current_release}/log'
-  ln -s '#{shared_dir}/log' '#{current_release}/log'
-
-  rm -rf '#{shared_dir}/config/secrets.yml.key' '#{current_release}/config/secrets.yml.key'
-  echo #{environment['ADSTASH_APP_SECRET']} >> '#{shared_dir}/config/secrets.yml.key'
-  ln -s '#{shared_dir}/config/secrets.yml.key' '#{current_release}/config/secrets.yml.key'
 `
 
 
@@ -138,30 +121,11 @@ end
 
 
 
-# create symbolic link to database.yml
-`
-  rm -rf '#{shared_dir}/config/database.yml' '#{current_release}/config/database.yml'
-  ln -s '#{shared_dir}/config/database.yml' '#{current_release}/config/database.yml'
-`
-
-
-
-# clean up
-`
-  sudo chown -R ubuntu:ubuntu #{git_dir}
-  rm '#{tmp_key_path}'
-
-  # To remove the last line added to ssh_config
-  sed '$ d' '#{ssh_config}' &> '#{ssh_config}'
-`
-
-
-
 # bundle app gems
 bash "bundle app gems" do
-  cwd current_release
+  cwd git_dir
   code <<-EOF
-    /home/ubuntu/.rbenv/shims/bundle install #--without development test
+    '#{bundle_path}' install #--without development test
   EOF
   user "ubuntu"
   environment ({'HOME' => '/home/ubuntu'})
@@ -171,9 +135,9 @@ end
 
 # run migration
 bash "run migration" do
-  cwd current_release
+  cwd git_dir
   code <<-EOF
-    /home/ubuntu/.rbenv/shims/bundle exec rake db:migrate RAILS_ENV=production
+    '#{bundle_path}' exec rake db:migrate RAILS_ENV=production
   EOF
   user "ubuntu"
   environment ({'HOME' => '/home/ubuntu'})
@@ -183,9 +147,9 @@ end
 
 # precompile assets
 bash "precompile assets" do
-  cwd current_release
+  cwd git_dir
   code <<-EOF
-    /home/ubuntu/.rbenv/shims/bundle exec rake assets:precompile RAILS_ENV=production
+    '#{bundle_path}' exec rake assets:precompile RAILS_ENV=production
   EOF
   user "ubuntu"
   environment ({'HOME' => '/home/ubuntu'})
@@ -193,10 +157,65 @@ end
 
 
 
+# link shared dir & current_release
+`
+  rm -rf '#{shared_dir}/config/database.yml' '#{git_dir}/config/database.yml'
+  ln -s '#{shared_dir}/config/database.yml' '#{git_dir}/config/database.yml'
+
+
+
+  if [ -d '#{git_dir}/bin' ]
+  then
+    echo "'#{git_dir}/bin' already exists"
+  else
+    rm -rf '#{git_dir}/bin'
+    ln -s '#{shared_dir}/bin' '#{git_dir}/bin'
+  fi
+
+
+
+  if [ -d '#{git_dir}/log' ]
+  then
+    echo "'#{git_dir}/log' already exists"
+  else
+    rm -rf '#{git_dir}/log'
+    ln -s '#{shared_dir}/log' '#{git_dir}/log'
+  fi
+
+
+
+  rm -rf '#{shared_dir}/config/secrets.yml.key' '#{git_dir}/config/secrets.yml.key'
+  echo #{environment['ADSTASH_APP_SECRET']} >> '#{shared_dir}/config/secrets.yml.key'
+  ln -s '#{shared_dir}/config/secrets.yml.key' '#{git_dir}/config/secrets.yml.key'
+
+
+
+  sudo chown -R ubuntu:ubuntu #{git_dir}
+
+
+
+  rm -rf '#{current_release}'
+  ln -s '#{git_dir}' '#{current_release}'
+`
+
+
+
+# clean up
+`
+  rm '#{tmp_key_path}'
+
+  # To remove the last line added to ssh_config
+  sed '$ d' '#{ssh_config}' &> '#{ssh_config}'
+`
+
+
+
 # restart app
 # recommended way according to https://www.phusionpassenger.com/library/admin/apache/restart_app.html
+# and reload nginx
 `
   passenger-config restart-app '#{current_release}'
+  sudo service nginx reload
 `
 
 
