@@ -1,6 +1,7 @@
 # Initializers
 deploy_root     = '/home/ubuntu/apps'
 app             = search("aws_opsworks_app").first
+data_sources    = search("aws_opsworks_rds_db_instance")
 environment     = app['environment']
 app_name        = app['name'] #'AdSatash'
 revision        = app['app_source']['revision'] ? "-b #{app['app_source']['revision']}" : ''
@@ -101,6 +102,34 @@ engines.each do |engine|
       echo #{secret} >> '#{dir}/config/secrets.yml.key'
     `
   end
+end
+
+
+
+# Configure Data Source
+data_source = nil
+app_arn     = nil
+app['data_sources'].each do |source|
+  # we are looking for RDS instances
+  next if source['type'] != 'RdsDbInstance'
+  # we only look for "one" ARN that hooked to this app
+  # cuz each app has only one data source (as it's setup on OpsWorks UI)
+  app_arn = source['arn'] if app_arn.nil?
+end
+
+data_sources.each do |source|
+  # loop trough all RDS layers and find ARN of app DB instance
+  data_source = Source if source['rds_db_instance_arn'] == app_arn
+end
+
+template "#{shared_dir}/config/database.yml" do
+  source "database.yml.erb"
+  variables( 
+      :host => data_source['address'],
+      :port => data_source['port'],
+      :db_user => data_source['db_user'],
+      :password => data_source['db_password']
+  )
 end
 
 
