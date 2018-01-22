@@ -66,6 +66,16 @@ end
 
 
 
+bash "create ping test dir" do
+  code <<-EOF
+    mkdir -p /home/ubuntu/apps/elb_ping
+    sudo chown -R ubuntu:ubuntu /home/ubuntu/apps/elb_ping
+  EOF
+  user "root"
+end
+
+
+
 cookbook_file "copy ELB ping test" do
   group "root"
   mode "0644"
