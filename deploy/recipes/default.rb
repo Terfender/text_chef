@@ -148,7 +148,7 @@ end
 
 # bundle app gems
 `
-  cd '#{current_release}'' && bundle install
+  cd '#{current_release}'' &&  /home/ubuntu/.rbenv/shims/bundle install --without development test
 `
 
 
