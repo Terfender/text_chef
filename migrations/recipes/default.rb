@@ -10,7 +10,7 @@ bundle_path       = '/home/ubuntu/.rbenv/shims/bundle'
 
 
 
-if instance['self'] && false
+if instance['self']
   Chef::Log.warn('This instance will run the migrations')
   bash "run migration" do
     cwd current_release

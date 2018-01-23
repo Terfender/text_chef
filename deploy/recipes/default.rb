@@ -38,6 +38,7 @@ end
 
 
 
+
 # Write ssh_key to a temp file
 File.write(tmp_key_path, ssh_key)
 
@@ -126,6 +127,23 @@ end
 
 
 
+# link shared dir & current_release
+`
+  rm '#{shared_dir}/config/secrets.yml.key'
+  echo #{environment['ADSTASH_APP_SECRET']} >> '#{shared_dir}/config/secrets.yml.key'
+  ln -fs '#{shared_dir}/config/secrets.yml.key' '#{git_dir}/config/secrets.yml.key'
+
+  ln -fs '#{shared_dir}/config/database.yml' '#{git_dir}/config/database.yml'
+
+  rm -rf '#{git_dir}/log'
+  ln -nfs '#{shared_dir}/log'    '#{git_dir}/log'
+
+  ln -nfs '#{git_dir}'           '#{current_release}'
+`
+
+
+
+log('running bulde intall')
 # bundle app gems
 bash "bundle app gems" do
   cwd git_dir
@@ -137,7 +155,7 @@ bash "bundle app gems" do
 end
 
 
-
+log('running assets precompile')
 # precompile assets
 bash "precompile assets" do
   cwd git_dir
@@ -150,50 +168,15 @@ end
 
 
 
-# link shared dir & current_release
-`
-  rm -rf '#{shared_dir}/config/database.yml' '#{git_dir}/config/database.yml'
-  ln -s '#{shared_dir}/config/database.yml' '#{git_dir}/config/database.yml'
-
-
-
-  if [ -d '#{git_dir}/bin' ]
-  then
-    echo "'#{git_dir}/bin' already exists"
-  else
-    rm -rf '#{git_dir}/bin'
-    ln -s '#{shared_dir}/bin' '#{git_dir}/bin'
-  fi
-
-
-
-  if [ -d '#{git_dir}/log' ]
-  then
-    echo "'#{git_dir}/log' already exists"
-  else
-    rm -rf '#{git_dir}/log'
-    ln -s '#{shared_dir}/log' '#{git_dir}/log'
-  fi
-
-
-
-  rm -rf '#{shared_dir}/config/secrets.yml.key' '#{git_dir}/config/secrets.yml.key'
-  echo #{environment['ADSTASH_APP_SECRET']} >> '#{shared_dir}/config/secrets.yml.key'
-  ln -s '#{shared_dir}/config/secrets.yml.key' '#{git_dir}/config/secrets.yml.key'
-
-
-
-  #rm -rf '#{current_release}'
-  ln -fs '#{git_dir}' '#{current_release}'
-
-
-  sudo chown -R ubuntu:ubuntu #{git_dir}
-`
-
-
-
 # run migration
 include_recipe 'migrations'
+
+
+
+# give ubuntu full access to git_dir
+`
+  sudo chown -R ubuntu:ubuntu #{git_dir}
+`
 
 
 
@@ -229,4 +212,9 @@ if releases_dirs.count > keep_releases
   releases_dirs.sort.take(keep_releases).each do |release|
     `rm -rf #{releases_dir}/#{release}`
   end
+end
+
+
+def log(msg)
+  Chef::Log.warn(msg)
 end
