@@ -1,18 +1,14 @@
 server {
-        #listen [::]:80 default;
         listen 80;
-
-        #server_name adstash.com;
 
         passenger_enabled on;
         passenger_app_env production;
 
-        root /home/ubuntu/apps/AdStash/current/public;
-        passenger_app_root /home/ubuntu/apps/AdStash/current;
+        root /home/ubuntu/apps/<%= @app_name %>/current/public;
+        passenger_app_root /home/ubuntu/apps/<%= @app_name %>/current;
 
         location = /elb_ping {
                alias /home/ubuntu/apps/elb_ping/;
                autoindex on;
         }
-
 }

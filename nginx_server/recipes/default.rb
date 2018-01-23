@@ -1,3 +1,6 @@
+app             = search("aws_opsworks_app").first
+app_name        = app['name']
+
 # Installing nginx and passenger
 # Retrieved from https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/ownserver/nginx/oss/xenial/install_passenger.html
 # In Jan 19, 2018
@@ -31,13 +34,15 @@ end
 
 
 
-cookbook_file "Copy adstash server configs" do
-  group "root"
-  mode "0644"
-  owner "root"
+template "adstash" do
+  source "adstash.erb"
   path "/etc/nginx/sites-available/adstash"
+  owner 'root'
   cookbook 'nginx_server'
-  source "adstash"  
+  group 'root'
+  variables({
+      app_name: app_name
+  })
 end
 
 
