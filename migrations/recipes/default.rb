@@ -6,11 +6,11 @@ current_release   = "#{deploy_root}/#{app_name}/current"
 instances         = search("aws_opsworks_instance")
 online_instances  = instances.select{ |instance| instance['status'] == 'online'}
 instance          = instances.sort_by{ |instance| instance['instance_id'] }.first
-bundle_path     = '/home/ubuntu/.rbenv/shims/bundle'
+bundle_path       = '/home/ubuntu/.rbenv/shims/bundle'
 
 
 
-if instance['self']
+if instance['self'] && false
   Chef::Log.warn('This instance will run the migrations')
   bash "run migration" do
     cwd current_release
