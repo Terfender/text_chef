@@ -90,14 +90,18 @@ end
 
 
 # Configure Data Source
-data_source = nil
-app_arn     = nil
+data_source     = nil
+app_arn         = nil
+database_name   = nil
 app['data_sources'].each do |source|
   # we are looking for RDS instances
   next if source['type'] != 'RdsDbInstance'
   # we only look for "one" ARN that hooked to this app
   # cuz each app has only one data source (as it's setup on OpsWorks UI)
-  app_arn = source['arn'] if app_arn.nil?
+  if app_arn.nil?
+    app_arn       = source['arn']
+    database_name = source['database_name']
+  end
 end
 
 data_sources.each do |source|
@@ -115,7 +119,8 @@ template "database.yml" do
       host:       data_source['address'],
       port:       data_source['port'],
       username:   data_source['db_user'],
-      password:   data_source['db_password']
+      password:   data_source['db_password'],
+      database:   database_name
   })
 end
 
@@ -178,11 +183,11 @@ end
 
 
 
-  sudo chown -R ubuntu:ubuntu #{git_dir}
-
-
   #rm -rf '#{current_release}'
   ln -fs '#{git_dir}' '#{current_release}'
+
+
+  sudo chown -R ubuntu:ubuntu #{git_dir}
 `
 
 
