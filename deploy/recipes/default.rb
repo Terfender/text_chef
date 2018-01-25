@@ -191,18 +191,23 @@ include_recipe 'migrations'
 
 
 # Run Sidekiq as daemon
-`
-  echo "starting check sidekiq"
+bash "Run Sidekiq as daemon" do
+  cwd current_release
+  code <<-EOF
+    echo 'starting check sidekiq'
 
-  if ps aux | grep '[s]idekiq'; then
-    echo 'sidekiq is running'
-  else
-    echo 'sidekiq is not running'
-    bundle exec sidekiq -d -l '#{current_release}'/log/sidekiq.log
-  fi
+    if ps aux | grep '[s]idekiq'; then
+      echo 'sidekiq is running'
+    else
+      echo 'sidekiq is not running'
+      '#{bundle_path}' exec sidekiq -d -l '#{current_release}'/log/sidekiq.log
+    fi
 
-  echo "finished sidekiq check"
-`
+    echo "finished sidekiq check"
+  EOF
+  user "ubuntu"
+  environment ({'HOME' => '/home/ubuntu'})
+end
 
 
 
