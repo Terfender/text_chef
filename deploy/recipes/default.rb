@@ -190,6 +190,22 @@ include_recipe 'migrations'
 
 
 
+# Run Sidekiq as daemon
+`
+  echo "starting check sidekiq"
+
+  if ps aux | grep '[s]idekiq'; then
+    echo 'sidekiq is running'
+  else
+    echo 'sidekiq is not running'
+    bundle exec sidekiq -d -l '#{current_release}'/log/sidekiq.log
+  fi
+
+  echo "finished sidekiq check"
+`
+
+
+
 # clean up
 `
   rm '#{tmp_key_path}'
