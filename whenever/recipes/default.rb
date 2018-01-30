@@ -15,7 +15,7 @@ if instance['self']
   bash "run whenver" do
     cwd current_release
     code <<~EOF
-      '#{bundle_path}' exec whenever --update-crontab --set environment='production' --set path='#{current_release}'
+      '#{bundle_path}' exec whenever --update-crontab --set environment=production --set path='#{current_release}' --set bundle_command='#{bundle_path} exec'
     EOF
     user "ubuntu"
     environment ({'HOME' => '/home/ubuntu'})
