@@ -11,4 +11,32 @@ server {
                alias /home/ubuntu/apps/elb_ping/;
                autoindex on;
         }
+
+
+        # ^((http(s)?):\/\/)?(www\.)?(api|stg-funds)\..+\.com((?!\/ad_stash)((?!\/finance)).)*$
+        # Detects if CName contains 'api' or 'stg-funds' and doesn't include 'ad_stash' and 'finance'
+        # online test https://www.regextester.com/?fam=102489
+        #
+        # Test cases:
+        #
+        # https://www.regextester.com/15
+        # http://www.stg-funds.adstash.com/ad_stash/
+        # http://www.funds.adstash.com/finance/ad_stash/
+        # http://www.funds.adstash.com/finance/
+        # http://www.funds.adstash.com/ad_stash/
+        # http://www.stg-funds.adstash/finance/
+        # www.stg-funds.adstash.com/finance/
+        # https://stg-funds.adstash.com/documentation/ad_stash
+        # www.stg-funds.adstash.com
+        # https://stg-funds.adstash.com/documentation/
+
+        location ~* ^((?!\/ad_stash)((?!\/finance)).)*$ {
+                # if the location is pure '/', then do nothing
+                rewrite ^\/$ $request_uri break;
+
+                # rewrite all paths with $request_uri prefixed with 'ad_stash'
+                rewrite ^ /ad_stash$request_uri break;
+                # proxy_pass https://stg-funds.adstash.com;
+                # proxy_redirect off;
+        }
 }

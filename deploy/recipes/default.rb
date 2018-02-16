@@ -3,8 +3,9 @@ deploy_root     = '/home/ubuntu/apps'
 app             = search("aws_opsworks_app").first
 data_sources    = search("aws_opsworks_rds_db_instance")
 environment     = app['environment']
+app_environment = app['environment']['APP_ENVIRONMENT'] ? app['environment']['APP_ENVIRONMENT'] : 'production'
 app_name        = app['name']
-revision        = app['app_source']['revision'] ? "-b #{app['app_source']['revision']}" : ''
+revision        = app['app_source']['revision'] ? app['app_source']['revision'] : 'master'
 ssh_key         = app['app_source']['ssh_key']
 git_url         = app['app_source']['url']
 releases_dir    = "#{deploy_root}/#{app_name}/releases"
@@ -54,7 +55,7 @@ File.write(tmp_key_path, ssh_key)
 
 # clone adstash-app repo
 `
-  ssh-agent bash -c 'ssh-add '#{tmp_key_path}'; git clone #{revision} #{git_url} '#{git_dir}''
+  ssh-agent bash -c 'ssh-add '#{tmp_key_path}'; git clone -b #{revision} #{git_url} '#{git_dir}''
 `
 
 
@@ -64,13 +65,11 @@ engines = [
   {
     name:         'ad_finance',
     url:          'git@bitbucket.org:linkett/adfinance.git',
-    revision:     'master',
     env_secret:   '',
   },
   {
     name:         'ad_stash',
     url:          'git@bitbucket.org:linkett/adstash_api.git',
-    revision:     'master',
     env_secret:   'ADSTASH_API_SECRET',
   }
 ]
@@ -78,7 +77,7 @@ engines.each do |engine|
   dir     = "#{git_dir}/engines/#{engine[:name]}"
   secret  = environment[engine[:env_secret]]
   `
-    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone -b #{engine[:revision]} #{engine[:url]} #{dir}'
+    ssh-agent bash -c 'ssh-add #{tmp_key_path}; git clone -b #{revision} #{engine[:url]} #{dir}'
   `
   if secret
     `
@@ -160,7 +159,7 @@ log('running assets precompile')
 bash "precompile assets" do
   cwd git_dir
   code <<-EOF
-    '#{bundle_path}' exec rake assets:precompile RAILS_ENV=production
+    '#{bundle_path}' exec rake assets:precompile RAILS_ENV='#{app_environment}'
   EOF
   user "ubuntu"
   environment ({'HOME' => '/home/ubuntu'})
@@ -200,7 +199,7 @@ bash "Run Sidekiq as daemon" do
       echo 'sidekiq is running'
     else
       echo 'sidekiq is not running'
-      '#{bundle_path}' exec sidekiq -d --environment production -l '#{current_release}'/log/sidekiq.log
+      '#{bundle_path}' exec sidekiq -d --environment '#{app_environment}' -l '#{current_release}'/log/sidekiq.log
     fi
 
     echo "finished sidekiq check"
