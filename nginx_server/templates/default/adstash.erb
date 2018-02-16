@@ -13,6 +13,7 @@ server {
         }
 
 
+
         # ^((http(s)?):\/\/)?(www\.)?(api|stg-funds)\..+\.com((?!\/ad_stash)((?!\/finance)).)*$
         # Detects if CName contains 'api' or 'stg-funds' and doesn't include 'ad_stash' and 'finance'
         # online test https://www.regextester.com/?fam=102489
@@ -31,11 +32,19 @@ server {
         # https://stg-funds.adstash.com/documentation/
 
         location ~* ^((?!\/ad_stash)((?!\/finance)).)*$ {
+                # if the CNAME is 'api'
+                if ($host ~* ^((http(s)?):\/\/)?(www\.)?(api).*$) {
+                        rewrite ^ /ad_stash$request_uri break;
+                }
+
                 # if the location is pure '/', then do nothing
                 rewrite ^\/$ $request_uri break;
 
                 # rewrite all paths with $request_uri prefixed with 'ad_stash'
+                # covers the case if the CNAME is not 'api'
+                # ex. 'stg-funds'
                 rewrite ^ /ad_stash$request_uri break;
+
                 # proxy_pass https://stg-funds.adstash.com;
                 # proxy_redirect off;
         }
