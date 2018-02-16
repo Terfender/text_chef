@@ -31,14 +31,14 @@ server {
         # www.stg-funds.adstash.com
         # https://stg-funds.adstash.com/documentation/
 
-        location ~* ^((?!\/ad_stash)((?!\/finance)).)*$ {
+        location ~* ^((?!\/ad_stash)(?!\/finance)(?!\/assets).)*$ {
                 # if the CNAME is 'api'
                 if ($host ~* ^((http(s)?):\/\/)?(www\.)?(api).*$) {
                         rewrite ^ /ad_stash$request_uri break;
                 }
 
                 # if the CNAME is 'funds'
-                if ($host ~* ^((http(s)?):\/\/)?(www\.)?(funds).*$) {
+                if ($host ~* ^((http(s)?):\/\/)?(www\.)?(funds\.).*$) {
                         rewrite ^ /finance$request_uri break;
                 }
 
