@@ -37,6 +37,11 @@ server {
                         rewrite ^ /ad_stash$request_uri break;
                 }
 
+                # if the CNAME is 'funds'
+                if ($host ~* ^((http(s)?):\/\/)?(www\.)?(funds).*$) {
+                        rewrite ^ /finance$request_uri break;
+                }
+
                 # if the location is pure '/', then do nothing
                 rewrite ^\/$ $request_uri break;
 
