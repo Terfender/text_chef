@@ -34,21 +34,21 @@ server {
         location ~* ^((?!\/ad_stash)(?!\/finance)(?!\/assets).)*$ {
                 # if the CNAME is 'api'
                 if ($host ~* ^((http(s)?):\/\/)?(www\.)?(api).*$) {
-                        rewrite ^ /ad_stash$request_uri break;
+                        rewrite ^ /ad_stash$uri?$query_string break;
                 }
 
                 # if the CNAME is 'funds'
                 if ($host ~* ^((http(s)?):\/\/)?(www\.)?(funds\.).*$) {
-                        rewrite ^ /finance$request_uri break;
+                        rewrite ^ /finance$uri?$query_string break;
                 }
 
                 # if the location is pure '/', then do nothing
-                rewrite ^\/$ $request_uri break;
+                rewrite ^\/$ $uri?$query_string break;
 
                 # rewrite all paths with $request_uri prefixed with 'ad_stash'
                 # covers the case if the CNAME is not 'api'
                 # ex. 'stg-funds'
-                rewrite ^ /ad_stash$request_uri break;
+                rewrite ^ /ad_stash$uri?$query_string break;
 
                 # proxy_pass https://stg-funds.adstash.com;
                 # proxy_redirect off;
