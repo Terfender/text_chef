@@ -18,6 +18,7 @@ server {
         # Detects if CName contains 'api' or 'stg-funds' and doesn't include 'ad_stash' and 'finance'
         # online test https://www.regextester.com/?fam=102489
         #
+        #
         # Test cases:
         #
         # https://www.regextester.com/15
@@ -45,7 +46,7 @@ server {
                 # if the location is pure '/', then do nothing
                 rewrite ^\/$ $uri?$query_string break;
 
-                # rewrite all paths with $request_uri prefixed with 'ad_stash'
+                # rewrite all paths with $uri?$query_string prefixed with 'ad_stash'
                 # covers the case if the CNAME is not 'api'
                 # ex. 'stg-funds'
                 rewrite ^ /ad_stash$uri?$query_string break;
