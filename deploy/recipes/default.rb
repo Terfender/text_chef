@@ -199,7 +199,7 @@ bash "Run Sidekiq as daemon" do
       echo 'sidekiq is running'
     else
       echo 'sidekiq is not running'
-      '#{bundle_path}' exec sidekiq -d --environment '#{app_environment}' -l '#{current_release}'/log/sidekiq.log
+      sudo '#{bundle_path}' exec sidekiq -d --environment '#{app_environment}' -l '#{current_release}'/log/sidekiq.log
     fi
 
     echo "finished sidekiq check"
